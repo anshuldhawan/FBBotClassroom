@@ -1,0 +1,8 @@
+<div>
+THIS WILL BE THE HOME PAGE
+<form method=GET action="/join">
+	Your Name: <input type="text" name="name"/><br/>
+	Your Phone Number: <input type="text" name="phone"/><br/>
+	Join Room: (leave blank to start a new room) <input type="text" name="room"/><br/>
+	<input type="submit"/>
+</form>

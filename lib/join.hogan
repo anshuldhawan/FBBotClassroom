@@ -1,0 +1,15 @@
+<div>
+You are in room {{room}}<br/>
+<div class="form">
+	<form method="GET" action="/say">
+		<input type="text" name="message"/>
+		<input type="submit"/>
+	</form>
+</div>
+<div class="history">
+{{#history}}
+	<div>
+		{{user}}
+		{{message}}
+	</div>
+{{/history}}
