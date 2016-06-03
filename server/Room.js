@@ -71,9 +71,13 @@ var Room = (function () {
 				var html = null;
 				for (var uid in openResponses) {
 					var res = openResponses[uid];
-					html = html || hogan.render('say', msgStruct);
 					console.log("Write Unless Finished", uid, res.finished);
-					if (!res.finished) {
+					if (res.finished) {
+						setTimeout(function () {
+							delete openResponses[uid];
+						}, 0);
+					} else {
+						html = html || hogan.render('say', msgStruct);
 						res.write(html);
 					}
 				}

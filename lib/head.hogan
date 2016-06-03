@@ -1,5 +1,11 @@
 <html>
 	<head>
 	{{{jscode}}}
+	<script type="text/javascript">
+		function loaded () {
+			document.cookie = "javascript=YES; path=/";
+			document.body.className = "js";
+		};
+	</script>
 	</head>
-	<body>
+	<body class="noscript" onload="loaded()">
