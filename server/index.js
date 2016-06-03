@@ -19,6 +19,8 @@ function log() {
 	}
 }
 
+var comment1k = fs.readFileSync("./comment1k.html", "utf-8");
+
 HoganServer.compileAll();
 
 function handleRequest(req, res) {
@@ -79,15 +81,19 @@ server.listen(port, function () {
   log('Server listening at port %d', port);
 });
 
-function keepOpen(response) {
-	log("Keeping a response open");
+function keepOpen(response, owner) {
+	log("Keeping a response open", owner);
+
 	response.on('timeout', function () {
-		log("Got timeout on open response");
+		log("Got timeout on open response", owner);
 	});
 
 	response.on('close', function () {
-		log("Got close on open response");
+		log("Got close on open response", owner);
 	});
+
+	// Prime the pump so the browser will decide to render
+	response.write(comment1k);
 }
 
 function finishUp(response) {
@@ -106,12 +112,12 @@ var Rest = {
 			}
 			var newRoom = Room(params.data.room, io, HoganServer);
 			newRoom.join(params.myId, params.socket || params.response);
-			if (params.hasJS == null && params.response) {
-				params.keepOpen = true;
-				keepOpen(params.response);
-			}
 			if (params.response) {
 				params.cookies.set(ROOM_COOKIE, newRoom.id);
+				if (params.hasJS == null) {
+					params.keepOpen = true;
+					keepOpen(params.response, params.myId);
+				}
 			}
 			render(params, {
 				template: "join",
@@ -145,18 +151,10 @@ var Rest = {
 		if (params.myRoom) {
 			var room = Room(params.myRoom, io, HoganServer);
 			room.say(params.myId, params.data.message);
-			if (params.hasJS == null && params.response) {
-				params.keepOpen = true;
-				keepOpen(params.response);
-			}
 			if (params.response) {
-				render(params, {
-					template: 'join',
-					data: {
-						room: params.myRoom,
-						history: room.history()
-					}
-				});
+				log("redirecting to join", params.myId);
+				params.response.writeHead(302, { "Location": "/join" });
+				params.response.end();
 			}
 		}
 	},
@@ -189,10 +187,10 @@ function handleRest(command, params) {
 
 function render(params, output) {
 	if (params.socket) {
-		log("rendering to a socket", output);
+		log("rendering to a socket", params.myId);
 		params.socket.emit(output.template, output.data);
 	} else if (params.response) {
-		log("rendering to a response", output);
+		log("rendering to a response", params.myId);
 		params.response.write(HoganServer.render('head', {
 			hasJS: params.hasJS
 		}));

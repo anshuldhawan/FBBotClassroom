@@ -44,6 +44,9 @@ var Room = (function () {
 					socket.join(roomid);
 				}
 				if (response) {
+					if (openResponses[userid]) {
+						console.log("join room: replacing one response with another", userid);
+					}
 					openResponses[userid] = response;
 				}
 			},
@@ -69,8 +72,10 @@ var Room = (function () {
 				for (var uid in openResponses) {
 					var res = openResponses[uid];
 					html = html || hogan.render('say', msgStruct);
-					console.log("ARE WE FINISHED?", uid, res.finished);
-					res.write(html);
+					console.log("Write Unless Finished", uid, res.finished);
+					if (!res.finished) {
+						res.write(html);
+					}
 				}
 			},
 			history: function () {
