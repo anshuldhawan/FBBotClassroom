@@ -1,8 +1,7 @@
-<div>
-THIS WILL BE THE HOME PAGE
+<div class="classroom home">
 <form method=GET action="/join">
-	Your Name: <input type="text" name="name"/><br/>
-	Your Phone Number: <input type="text" name="phone"/><br/>
-	Join Room: (leave blank to start a new room) <input type="text" name="room"/><br/>
+	Your Name: <input type="text" name="name" value="{{name}}"/><br/>
+	Your Phone Number: <input type="text" name="phone" value="{{phone}}"/><br/>
+	Join Room: (leave blank to start a new room) <input type="text" name="room" value="{{room}}"/><br/>
 	<input type="submit"/>
 </form>

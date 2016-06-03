@@ -1,4 +1,4 @@
-<div>
-	{{user}}
-	{{message}}
+<div class="user_{{name}}">
+	<div class="name">{{name}}</div>
+	<div class="message">{{message}}</div>
 </div>

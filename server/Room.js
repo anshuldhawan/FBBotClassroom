@@ -60,20 +60,27 @@ var Room = (function () {
 					delete openResponses[userid];
 				}
 			},
-			say: function (userid, message) {
+			say: function (name, message) {
 				var msgStruct = {
-					user: userid,
+					name: name,
 					message: message,
 					timestamp: + new Date()
 				};
 				history.push(msgStruct);
-				io.to(roomid).emit('say', msgStruct);
+				io.to(roomid).emit('event', {
+					template: 'say',
+					data: msgStruct
+				});
 				var html = null;
 				for (var uid in openResponses) {
 					var res = openResponses[uid];
-					html = html || hogan.render('say', msgStruct);
 					console.log("Write Unless Finished", uid, res.finished);
-					if (!res.finished) {
+					if (res.finished) {
+						setTimeout(function () {
+							delete openResponses[uid];
+						}, 0);
+					} else {
+						html = html || hogan.render('say', msgStruct);
 						res.write(html);
 					}
 				}

@@ -1,15 +1,23 @@
-<div>
-You are in room {{room}}<br/>
-<div class="form">
+<style>
+	div.join div.history > div.user_{{viewer}} > div {
+		float: left;
+	}
+</style>
+<div class="classroom join">
+<div class="titleBar">
+Learn <span class="english">English</span> with Friends:
+Room {{room}}
+</div>
+<div class="say-form">
 	<form method="GET" action="/say">
-		<input type="text" name="message"/>
-		<input type="submit"/>
+		<input type="text" name="message" class="message" placeholder="Write something..."/>
+		<input type="submit" class="submit" value="SEND"/>
 	</form>
 </div>
 <div class="history">
 {{#history}}
-	<div>
-		{{user}}
-		{{message}}
+	<div class="user_{{name}}">
+		<div class="name">{{name}}</div>
+		<div class="message">{{message}}</div>
 	</div>
 {{/history}}

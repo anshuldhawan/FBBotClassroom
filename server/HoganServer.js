@@ -29,8 +29,9 @@ var HoganServer = (function () {
 			"var hoganTemplates = {" + templatesjs.join(",\n") + "};\n" +
 			"var hoganTemplateSources = " + JSON.stringify(templatesource) + ";\n" +
 			';\n</script>\n' +
-			'<script src="/assets/hogan.js"></script>\n' +
+			'<script src="/assets/lib/hogan.js"></script>\n' +
 			'<script src="/assets/lib/HoganTemplates.js"></script>\n' +
+			'<script src="/socket.io/socket.io.js"></script>\n' +
 			'<script src="/assets/lib/Client.js"></script>\n'
 			;
 	}
