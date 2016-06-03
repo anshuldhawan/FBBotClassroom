@@ -1,5 +1,4 @@
 var http = require('http');
-var dispatcher = require('httpdispatcher');
 var fs = require('fs');
 var Cookies = require('cookies');
 var Keygrip = require('keygrip');
@@ -13,7 +12,7 @@ var NAME_COOKIE = "name";
 var PHONE_COOKIE = "phone";
 var JAVASCRIPT_COOKIE = "javascript";
 var SUPPRESS_JS_COOKIE = "supress_js";
-var ROOM_COOKIE = "rbroom";
+var ROOM_COOKIE = "room";
 
 function log() {
 	if (true) {
@@ -115,8 +114,6 @@ function keepOpen(response, owner) {
 		log("Got close on open response", owner);
 	});
 
-	// Prime the pump so the browser will decide to render
-	response.write(comment1k);
 }
 
 function finishUp(response) {
@@ -136,7 +133,6 @@ var Rest = {
 			var newRoom = Room(params.data.room, io, HoganServer);
 			newRoom.join(params.myId, params.socket || params.response);
 			if (params.response) {
-				params.cookies.set(ROOM_COOKIE, newRoom.id);
 				if (params.hasJS == null) {
 					params.keepOpen = true;
 					keepOpen(params.response, params.myId);
@@ -146,7 +142,13 @@ var Rest = {
 				template: "join",
 				data: {
 					room: newRoom.id,
+					viewer: params.data.name || params.myName,
 					history: newRoom.history()
+				},
+				cookies: {
+					room: newRoom.id,
+					name: params.data.name || params.myName,
+					phone: params.data.phone || params.myPhone
 				}
 			});
 		}
@@ -163,9 +165,12 @@ var Rest = {
 		render(params, {
 			template: "home",
 			data: {
-				name: "",
-				phone: "",
+				name: params.myName,
+				phone: params.myPhone,
 				room: ""
+			},
+			cookies: {
+				room: null
 			}
 		});
 	},
@@ -173,7 +178,7 @@ var Rest = {
 	'say': function (params) {
 		if (params.myRoom) {
 			var room = Room(params.myRoom, io, HoganServer);
-			room.say(params.myId, params.data.message);
+			room.say(params.myName, params.data.message);
 			if (params.response) {
 				log("redirecting to join", params.myId);
 				params.response.writeHead(302, { "Location": "/join" });
@@ -251,12 +256,22 @@ function render(params, output) {
 		params.socket.emit('event', output);
 	} else if (params.response) {
 		log("rendering to a response", params.myId);
+		if (output.cookies && params.cookies) {
+			for (var key in output.cookies) {
+				params.cookies.set(key, output.cookies[key]);
+			}
+		}
+		if (params.keepOpen) {
+			// Prime the pump so the browser will decide to render
+			params.response.write(comment1k);
+		}
 		params.response.write(HoganServer.render('head', {
-			hasJS: params.hasJS
+			hasJS: params.hasJS,
+			name: params.myName
 		}));
 		params.response.write(HoganServer.render(output.template, output.data));
 		if (!params.keepOpen) {
-			console.log("Rendinering the tail");
+			console.log("Rendering the tail");
 			params.response.end(HoganServer.render('tail', {}));
 		}
 	}
@@ -264,6 +279,8 @@ function render(params, output) {
 
 io.on('connection', function (socket) {
 	// NOTE: Can't call set on this cookies since there is no response object.
+	// instead, we send the cookies we want to set on the socket message and set them
+	// on the client via javascript.
 	var cookies = new Cookies(socket.request, null);
 	var myName = cookies.get(NAME_COOKIE);
 	var myPhone = cookies.get(PHONE_COOKIE);

@@ -1,5 +1,86 @@
 <html>
 	<head>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			background-color: F0F1F3;
+			font-family: Verdana, Arial, sans-serif;
+		}
+		div.join div.titlebar {
+			height: 40px;
+			width: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			color: white;
+			text-align: center;
+			font-size: 25px;
+			background-color: #3C4446;
+			padding: 5px;
+		}
+		div.titlebar span.english {
+			color: #D6441B;
+		}
+		div.join div.say-form {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			height: 50px;
+			padding: 5px;
+			z-index: 2;
+			background-color: white;
+		}
+		div.join div.say-form form {
+			width: 70%;
+			margin: 0 auto;
+		}
+		input {
+			font-size: 17px;
+			padding: 10px;
+		}
+		input.message {
+			width: 70%;
+		}
+		input.submit {
+			background-color: #73B4D4;
+			color: white;
+			font-weight: bold;
+			border: none;
+			box-shadow: 3px 3px 3px #EFEDEE;
+		}
+		div.join div.history {
+			width: 100%;
+			z-index: 1;
+			margin-bottom: 60px;
+			margin-top: 50px;
+		}
+		div.join div.history > div {
+			clear: both;
+			width: 70%;
+			height: 60px;
+			margin: 5px auto;
+			padding: 5px;
+		}
+		div.join div.history > div > div {
+			float: right;
+			padding: 5px;
+			color: #637277;
+		}
+		div.join div.history div.name {
+			font-weight: bold;
+			border: none;
+			background-color: transparent;
+			font-size: 1.2em;
+		}
+		div.join div.history div.message {
+			background-color: white;
+			border-radius: 3px;
+			box-shadow: 0px 3px 3px #E3E4E6;
+		}
+	</style>
 	{{{jscode}}}
 	<script type="text/javascript">
 		function loaded () {
