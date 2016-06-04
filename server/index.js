@@ -1,12 +1,12 @@
 var http = require('http');
 var fs = require('fs');
 var Cookies = require('cookies');
-var Keygrip = require('keygrip');
 var url = require('url');
 var SocketIo = require('socket.io');
 var port = process.env.PORT || 3000;
 var Room = require('./Room.js');
 var HoganServer = require('./HoganServer.js');
+var request = require('request');
 
 var NAME_COOKIE = "name";
 var PHONE_COOKIE = "phone";
@@ -96,6 +96,19 @@ function handleRequest(req, res) {
 	handleRest(command, s);
 }
 
+function talkToBot(room, message) {
+	request({
+			url: 'https://tranquil-sea-40738.herokuapp.com/getBotResponse?response=' +
+				message +
+				'&user='  + room,
+			json: true
+		}, function(err, res, messageback) {
+			console.log("Talking to Switty", message, messageback);
+			var myRoom = Room(room, io, HoganServer);
+			myRoom.say("Switty", messageback);
+		});
+}
+
 var server = http.createServer(handleRequest);
 var io = SocketIo(server);
 
@@ -151,6 +164,8 @@ var Rest = {
 					phone: params.data.phone || params.myPhone
 				}
 			});
+			// TODO: need to let the bot know we've joined the room, but haven't said anything
+			//talkToBot(newRoom.id, "oo");
 		}
 	},
 	// leave the room
@@ -184,6 +199,7 @@ var Rest = {
 				params.response.writeHead(302, { "Location": "/join" });
 				params.response.end();
 			}
+			talkToBot(params.myRoom, params.data.message);
 		}
 	},
 	// display the login page
