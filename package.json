@@ -7,7 +7,7 @@
 		"socket.io": "^1.4.6",
 		"hogan.js": "~2.0.0",
 		"httpdispatcher": "*",
-		"cookies": "*",
-		"keygrip": "*"
+		"request": "*",
+		"cookies": "*"
 	}
 }

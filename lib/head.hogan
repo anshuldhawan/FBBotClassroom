@@ -1,6 +1,9 @@
 <html>
 	<head>
 	<style>
+		html {
+			height: 100%;
+		}
 		* {
 			margin: 0;
 			padding: 0;
@@ -8,11 +11,12 @@
 		body {
 			background-color: F0F1F3;
 			font-family: Verdana, Arial, sans-serif;
+			height: 100%;
 		}
 		div.join div.titlebar {
 			height: 40px;
 			width: 100%;
-			position: absolute;
+			position: fixed;
 			top: 0;
 			left: 0;
 			color: white;
@@ -25,7 +29,7 @@
 			color: #D6441B;
 		}
 		div.join div.say-form {
-			position: absolute;
+			position: fixed;
 			bottom: 0;
 			width: 100%;
 			height: 50px;
