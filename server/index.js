@@ -89,7 +89,7 @@ function handleRequest(req, res) {
 	}
 
 	if (!myRoom && command != 'join') {
-		handleRest('home', s);
+		handleRest('logout', s);
 		return;
 	}
 
@@ -174,15 +174,13 @@ var Rest = {
 			var room = Room(params.myRoom, io, HoganServer);
 			room.leave(params.myId, params.socket || params.response);
 		}
-		if (params.response) {
-			params.cookies.set(ROOM_COOKIE);
-		}
 		render(params, {
 			template: "home",
 			data: {
 				name: params.myName,
 				phone: params.myPhone,
-				room: ""
+				room: "",
+				loggedIn: params.myId ? "logged-in" : ""
 			},
 			cookies: {
 				room: null
@@ -202,12 +200,29 @@ var Rest = {
 			talkToBot(params.myRoom, params.data.message);
 		}
 	},
+	'logout': function (params) {
+		render(params, {
+			template: 'home',
+			data: {
+				name: "",
+				phone: "",
+				room: "",
+				loggedIn: ""
+			},
+			cookies: {
+				name: null,
+				phone: null,
+				room: null
+			}
+		});
+	},
 	// display the login page
 	'home': function (params) {
 		var data = {
 			name: params.myName,
 			phone: params.myPhone,
-			room: params.myRoom
+			room: params.myRoom,
+			loggedIn: params.myId ? "logged-in" : ""
 		};
 		render(params, {
 			template: 'home',
@@ -258,7 +273,7 @@ function handleAssets(params) {
 }
 function handleRest(command, params) {
 	if (Rest[command]) {
-		log("handling rest command", command, params.data);
+		log("handling rest command", command, params.myRoom, params.data);
 		Rest[command](params);
 		return;
 	}

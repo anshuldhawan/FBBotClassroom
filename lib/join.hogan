@@ -12,6 +12,7 @@ Room {{room}}
 	<form method="GET" action="/say">
 		<input type="text" name="message" class="message" placeholder="Write something..."/>
 		<input type="submit" class="submit" value="SEND"/>
+		<a href="/leave">LEAVE ROOM</a>
 	</form>
 </div>
 <div class="history">

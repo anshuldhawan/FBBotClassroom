@@ -1,4 +1,4 @@
-<div class="classroom home">
+<div class="classroom home {{loggedIn}}">
 <div class="titlebar">
 Learn <span class="english">English</span> with Friends
 </div>
@@ -8,5 +8,6 @@ Learn <span class="english">English</span> with Friends
 	Your Phone Number: <input type="text" name="phone" value="{{phone}}"/><br/>
 	Join Room: (leave blank to start a new room) <input type="text" name="room" value="{{room}}"/><br/>
 	<input type="submit" class="submit" value="join"/>
+	<a href="/logout">Log Out</a>
 </form>
 </div>

@@ -54,6 +54,23 @@
 			font-weight: bold;
 			border: none;
 			box-shadow: 3px 3px 3px #EFEDEE;
+			cursor: pointer;
+		}
+		form a {
+			background-color: #D46300;
+			margin-left: 30px;
+			color: white;
+			font-weight: bold;
+			border: none;
+			box-shadow: 3px 3px 3px #EFEDEE;
+			text-decoration: none;
+			padding: 10px;
+		}
+		.home-form a {
+			display: none;
+		}
+		.logged-in .home-form a {
+			display: inline;
 		}
 		div.join div.history {
 			width: 100%;

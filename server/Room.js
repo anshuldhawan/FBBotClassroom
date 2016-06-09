@@ -31,7 +31,6 @@ var Room = (function () {
 	}
 
 	function createRoom(roomid, io, hogan) {
-		roomid = roomid || randomRoomId();
 		//TODO do this right w/prototypes
 		var history = [];
 		var openResponses = {};
@@ -92,6 +91,7 @@ var Room = (function () {
 	}
 
 	function findOrCreateRoom (roomid, io, hogan) {
+		roomid = roomid || randomRoomId();
 		if (!rooms[roomid]) {
 			rooms[roomid] = createRoom(roomid, io, hogan);
 		}
