@@ -2,6 +2,7 @@
 	"name": "FBBotClassRoom",
 	"version": "0.0.1",
 	"description": "Free Basics classroom chat bot",
+        "main": "server/index.js",
 	"dependencies": {
 		"express": "^4.10.2",
 		"socket.io": "^1.4.6",
