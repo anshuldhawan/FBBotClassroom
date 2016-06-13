@@ -18,7 +18,7 @@ var HoganServer = (function () {
 
 	function compileAll() {
 		alltemplates.forEach(function (fname) {
-			var f = fs.readFileSync('../lib/' + fname + '.hogan', 'utf8');
+			var f = fs.readFileSync('lib/' + fname + '.hogan', 'utf8');
 			templates[fname] = hogan.compile(f);
 			if (fname != "head") {
 				templatesource[fname] = f;

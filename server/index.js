@@ -20,7 +20,7 @@ function log() {
 	}
 }
 
-var comment1k = fs.readFileSync("./comment1k.html", "utf-8");
+var comment1k = fs.readFileSync("server/comment1k.html", "utf-8");
 
 HoganServer.compileAll();
 

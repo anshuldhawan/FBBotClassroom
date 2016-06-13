@@ -4,8 +4,8 @@
 	"description": "Free Basics classroom chat bot",
         "main": "server/index.js",
 	"scripts": {
-   		 "test": "echo \"Error: no test specified\" && exit 1"
-  	},
+  		"start" : "node server/index.js"
+        },
 	"dependencies": {
 		"express": "^4.10.2",
 		"socket.io": "^1.4.6",
